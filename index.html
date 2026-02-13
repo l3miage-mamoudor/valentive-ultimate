@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The One - Valentine Ultimate</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Fira+Mono&display=swap');
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:#0a0a0a;color:#fff;font-family:'Fira Mono', monospace;overflow:hidden;}
+  .scene{width:100vw;height:100vh;display:flex;justify-content:center;align-items:center;flex-direction:column;text-align:center;opacity:0;transition:opacity 1s ease;}
+  .active{opacity:1;}
+  .fadeSlide{opacity:0; transform:translateY(30px); animation:fadeSlide 1s forwards;}
+  @keyframes fadeSlide{to{opacity:1; transform:translateY(0);}}
+  .red{color:#e63946;}
+  .heart{color:#e63946;font-size:3rem;animation:beat 1s infinite alternate;}
+  @keyframes beat{0%{transform:scale(1);}100%{transform:scale(1.2);}}
+  .button{margin-top:2rem;padding:0.8rem 2rem;border:none;background:#e63946;color:#fff;font-family:'Playfair Display', serif;font-size:1.1rem;cursor:pointer;border-radius:5px;transition:0.3s;}
+  .button:hover{background:#f56570;}
+  #particles{position:absolute;width:100%;height:100%;pointer-events:none;overflow:hidden;}
+  .particle{position:absolute;width:10px;height:10px;background:#e63946;border-radius:50%;opacity:0.8;animation:float 5s linear infinite;}
+  @keyframes float{0%{transform:translateY(0) rotate(0deg);}100%{transform:translateY(-100vh) rotate(360deg);opacity:0;}}
+</style>
+</head>
+<body>
+
+<audio id="bgm" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" autoplay loop></audio>
+
+<div id="particles"></div>
+
+<!-- Scene 1 -->
+<div class="scene active" id="scene1">
+  <div class="typewriter" data-text="Booting emotional system..."></div>
+  <div class="typewriter" data-text="Scanning humanity database..."></div>
+  <div class="typewriter" data-text="8 042 311 447 humans detected."></div>
+  <div class="typewriter" data-text="Searching for anomaly..."></div>
+</div>
+
+<!-- Scene 2 -->
+<div class="scene" id="scene2">
+  <div class="typewriter fadeSlide" data-text="Error."></div>
+  <div class="typewriter fadeSlide" data-text="Only one match qualifies."></div>
+  <div class="typewriter red fadeSlide" data-text="[SON PRÉNOM]"></div>
+  <button class="button" onclick="nextScene()">ACCESS PRIVATE FILE</button>
+</div>
+
+<!-- Scene 3 -->
+<div class="scene" id="scene3">
+  <div class="typewriter fadeSlide" data-text="Ce programme n’a pas été développé pour tout le monde."></div>
+  <div class="typewriter fadeSlide" data-text="Il a été créé pour une seule personne."></div>
+  <div class="typewriter red fadeSlide" data-text="Toi."></div>
+  <button class="button" onclick="nextScene()">CONTINUER</button>
+</div>
+
+<!-- Scene 4 -->
+<div class="scene" id="scene4">
+  <div class="typewriter fadeSlide" data-text="Parmi des milliards, mon cœur t’a reconnu. Pas par hasard. Pas par erreur. Mais comme une évidence."></div>
+  <button class="button" onclick="nextScene()">CONTINUER</button>
+</div>
+
+<!-- Scene 5 -->
+<div class="scene" id="scene5">
+  <div class="typewriter fadeSlide" data-text="Même quand les jours sont lourds, je te regarde toujours avec les mêmes yeux."></div>
+  <button class="button" onclick="nextScene()">CONTINUER</button>
+</div>
+
+<!-- Scene 6 -->
+<div class="scene" id="scene6">
+  <pre class="typewriter fadeSlide">
+if (life.getHard()) {
+    remember("You are loved.");
+}
+
+const myChoice = "You";
+let forever = true;
+  </pre>
+  <button class="button" onclick="nextScene()">CONTINUER</button>
+</div>
+
+<!-- Scene 7 -->
+<div class="scene" id="scene7">
+  <div class="typewriter fadeSlide" data-text="Ce n’est pas juste la Saint-Valentin. C’est le jour où je te rappelle que tu comptes. Que tu es devenu essentiel. Et que je t’aime. Beaucoup. Beaucoup. Beaucoup."></div>
+  <span class="heart">❤️❤️❤️</span>
+  <button class="button" onclick="nextScene()">CONTINUER</button>
+</div>
+
+<!-- Scene 8 -->
+<div class="scene" id="scene8">
+  <div class="typewriter fadeSlide" data-text="Si l’amour était un algorithme, tu serais la seule valeur non remplaçable. Peu importe les mises à jour de la vie, tu resteras ma version préférée. Joyeuse Saint-Valentin 🤍 — Celle qui t’aime plus que tu ne l’imagines."></div>
+  <div style="margin-top:2rem; font-size:1rem; opacity:0.7;">Connection stable. Always.</div>
+</div>
+
+<script>
+let currentScene=1;
+function nextScene(){
+  document.getElementById('scene'+currentScene).classList.remove('active');
+  currentScene++;
+  document.getElementById('scene'+currentScene).classList.add('active');
+  typeWriterScene(currentScene);
+}
+
+function typeWriter(el,text,i=0){
+  if(i<text.length){
+    el.innerHTML+=text.charAt(i);
+    setTimeout(()=>typeWriter(el,text,i+1),30);
+  }
+}
+
+function typeWriterScene(sceneId){
+  let scene=document.getElementById('scene'+sceneId);
+  let elems=scene.querySelectorAll('.typewriter');
+  elems.forEach(el=>{
+    let text=el.dataset.text || el.textContent;
+    el.textContent='';
+    typeWriter(el,text);
+  });
+}
+
+typeWriterScene(currentScene);
+
+function createParticles(){
+  const container=document.getElementById('particles');
+  for(let i=0;i<70;i++){
+    let p=document.createElement('div');
+    p.classList.add('particle');
+    p.style.left=Math.random()*100+'%';
+    p.style.width=p.style.height=(5+Math.random()*5)+'px';
+    p.style.animationDuration=(3+Math.random()*3)+'s';
+    container.appendChild(p);
+  }
+}
+createParticles();
+</script>
+
+</body>
+</html>
