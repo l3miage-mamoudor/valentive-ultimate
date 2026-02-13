@@ -5,11 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The One - Valentine Ultimate</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Fira+Mono&display=swap');
+
 body {
   margin:0;
   background: radial-gradient(circle at center, #1a1a1a, #000);
   color:white;
-  font-family:'Segoe UI', sans-serif;
+  font-family:'Fira Mono', monospace;
   overflow:hidden;
   text-align:center;
 }
@@ -39,21 +41,24 @@ input {
 button {
   margin-top:20px;
   padding:12px 30px;
-  border:1px solid white;
-  background:transparent;
+  border:none;
+  background:#e63946;
   color:white;
+  font-family:'Playfair Display', serif;
+  font-size:1.1rem;
   cursor:pointer;
+  border-radius:5px;
   transition:0.3s;
 }
 
-button:hover { background:white; color:black; }
+button:hover { background:#f56570; }
 
 .hint { margin-top:2rem; font-size:0.9rem; opacity:0.6; }
 #error { color:#ff4d6d; margin-top:1rem; }
 
 .terminal-box {
   background:#000;
-  padding:40px;
+  padding:30px;
   border-radius:10px;
   box-shadow:0 0 30px rgba(255,255,255,0.1);
   width:80%;
@@ -62,30 +67,32 @@ button:hover { background:white; color:black; }
 
 pre { color:#00ff88; font-family:monospace; font-size:1.1rem; text-align:left; }
 
-.red { color:#e63946; font-size:2.5rem; margin-top:1rem; animation:beat 1s infinite alternate; }
+.red { color:#e63946; font-family:'Playfair Display', serif; font-size:3rem; margin-top:1rem; animation:beat 1s infinite alternate; }
 @keyframes beat {0%{transform:scale(1);}100%{transform:scale(1.2);} }
 
 .big { font-size:1.6rem; line-height:1.6; margin:1rem 0; }
 
-.final { font-size:1.8rem; line-height:1.8; max-width:800px; margin:2rem auto; text-align:center; }
-
-.algo-text {
-  font-size:1.8rem;
+.final {
+  font-family:'Playfair Display', serif;
+  font-size:1.6rem;
   line-height:1.8;
   max-width:800px;
+  margin:2rem auto;
   text-align:center;
-  animation:fadeIn 2s ease forwards;
-  text-shadow:0 0 15px rgba(255,255,255,0.4);
 }
 
-@keyframes fadeIn {
-  from { opacity:0; transform: translateY(20px); }
-  to { opacity:1; transform: translateY(0); }
-}
+.pause { margin-top:0.5rem; }
+
+.impact { font-weight:700; margin-top:0.5rem; font-size:1.8rem; color:#e63946; }
+
+.final-line { font-weight:700; font-size:1.7rem; margin-top:0.5rem; }
+
+.signature { margin-top:1.5rem; font-style:italic; opacity:0.7; }
 
 #particles{position:absolute;width:100%;height:100%;pointer-events:none;overflow:hidden;}
 .particle{position:absolute;width:10px;height:10px;background:#e63946;border-radius:50%;opacity:0.8;animation:float 5s linear infinite;}
 @keyframes float{0%{transform:translateY(0) rotate(0deg);}100%{transform:translateY(-100vh) rotate(360deg);opacity:0;}}
+
 </style>
 </head>
 <body>
@@ -93,16 +100,16 @@ pre { color:#00ff88; font-family:monospace; font-size:1.1rem; text-align:left; }
 <audio id="bgm" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" autoplay loop></audio>
 <div id="particles"></div>
 
-<!-- SCENE 0: MOT DE PASSE -->
+<!-- SCENE 0 -->
 <div class="scene active" id="scene0">
   <h1>Bienvenue…<br>Pour accéder à ton expérience spéciale Saint-Valentin,<br>entre le mot de passe secret :</h1>
-  <input type="password" id="passwordInput" placeholder="Mot de passe">
+  <input type="password" id="passwordInput" placeholder="💖 Mot de passe 💖">
   <button onclick="checkPassword()">Entrer</button>
   <p class="hint">Indice : combinaison de ton prénom et du mien. 8 lettres.</p>
   <p id="error"></p>
 </div>
 
-<!-- SCENE 1: TERMINAL BOOT -->
+<!-- SCENE 1: TERMINAL -->
 <div class="scene" id="scene1">
   <div class="terminal-box">
     <pre id="bootText"></pre>
@@ -128,7 +135,7 @@ pre { color:#00ff88; font-family:monospace; font-size:1.1rem; text-align:left; }
   <button onclick="nextScene()">CONTINUER</button>
 </div>
 
-<!-- SCENE 5: DÉCLARATION FINALE -->
+<!-- SCENE 5: DÉCLARATION -->
 <div class="scene" id="scene5">
   <div class="final">
     Tu es spécial pour moi.<br>Bien plus que tu ne l’imagines.<br><br>
@@ -139,7 +146,7 @@ pre { color:#00ff88; font-family:monospace; font-size:1.1rem; text-align:left; }
   <button onclick="nextScene()">CONTINUER</button>
 </div>
 
-<!-- SCENE 6: SI LIFE GETS HARD -->
+<!-- SCENE 6: CODE -->
 <div class="scene" id="scene6">
   <pre class="big">
 if (life.getHard()) {
@@ -154,11 +161,71 @@ let forever = true;
 
 <!-- SCENE 7: ALGO -->
 <div class="scene" id="scene7">
-  <div class="algo-text">
+  <div class="big">
     Si l’amour était un algorithme,<br>
     tu serais la seule valeur non remplaçable.<br><br>
     Peu importe les mises à jour de la vie,<br>
     tu resteras ma version préférée.
+  </div>
+  <button onclick="nextScene()">CONTINUER</button>
+</div>
+
+<!-- SCENE 8: MONOLOGUE FINAL -->
+<div class="scene final" id="scene8">
+  <div class="final">
+    <p>Tu sais ce qui est fou ?</p>
+    <p>Je ne t’attendais pas.</p>
+    <p>Je ne cherchais pas quelqu’un.</p>
+    <p>Je ne préparais pas mon cœur à ça.</p>
+    <p class="pause"></p>
+    <p>Et puis tu es arrivé.</p>
+    <p>Sans bruit.</p>
+    <p>Sans promesse.</p>
+    <p>Sans grand discours.</p>
+    <p class="pause"></p>
+    <p>Et pourtant…</p>
+    <p>tout a changé.</p>
+    <p class="pause"></p>
+    <p>Depuis toi, mes journées ont une couleur différente.</p>
+    <p>Mes silences ont un sens.</p>
+    <p>Même mes peurs ont appris à respirer.</p>
+    <p class="pause"></p>
+    <p>Tu n’es pas juste quelqu’un que j’aime.</p>
+    <p>Tu es celui qui a déplacé quelque chose en moi</p>
+    <p>que je croyais immobile.</p>
+    <p class="pause"></p>
+    <p>Tu es devenu une habitude douce.</p>
+    <p>Une évidence.</p>
+    <p>Un refuge.</p>
+    <p class="pause"></p>
+    <p>Et parfois ça me fait peur,</p>
+    <p>parce que ce que je ressens pour toi</p>
+    <p>n’a rien de léger.</p>
+    <p class="pause"></p>
+    <p>Ce n’est pas un crush.</p>
+    <p>Ce n’est pas une phase.</p>
+    <p>Ce n’est pas un moment.</p>
+    <p class="pause"></p>
+    <p>C’est un choix.</p>
+    <p>Un choix que je fais chaque jour</p>
+    <p>sans même avoir besoin d’y penser.</p>
+    <p class="pause"></p>
+    <p>Si la vie décide d’être dure,</p>
+    <p>je veux être là.</p>
+    <p>Si elle décide d’être belle,</p>
+    <p>je veux la vivre avec toi.</p>
+    <p class="pause"></p>
+    <p>ISSA.</p>
+    <p class="impact">Je ne t’aime pas “un peu”.</p>
+    <p class="impact">Je ne t’aime pas “beaucoup”.</p>
+    <p class="impact">Je t’aime d’une manière qui ne recule pas.</p>
+    <p class="impact">D’une manière qui reste.</p>
+    <p class="impact">D’une manière qui construit.</p>
+    <p class="pause"></p>
+    <p class="final-line">Et si demain tout change,</p>
+    <p class="final-line">sache qu’aujourd’hui,</p>
+    <p class="final-line">je te choisis.</p>
+    <p class="signature">— ROUMISSA</p>
   </div>
 </div>
 
@@ -187,7 +254,7 @@ function checkPassword() {
   }
 }
 
-// TERMINAL BOOT
+// TERMINAL
 const bootLines = [
   "> Booting emotional system...",
   "> Accessing heart memory...",
@@ -218,11 +285,11 @@ function typeLine(){
         clearInterval(interval);
         document.getElementById("bootText").innerHTML += "\n";
         lineIndex++;
-        setTimeout(typeLine, 400);
+        setTimeout(typeLine, 300);
       }
     },30);
   } else {
-    setTimeout(()=>goToScene("scene2"), 800);
+    setTimeout(()=>goToScene("scene2"), 500);
     currentScene = 2;
   }
 }
