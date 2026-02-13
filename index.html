@@ -46,7 +46,7 @@ input{padding:0.8rem 1rem; font-size:1rem; border-radius:5px; border:none;}
 <!-- Scene 1 - Terminal intro -->
 <div class="scene" id="scene1">
   <div style="font-family:'Playfair Display', serif; font-size:1.5rem; margin-bottom:1rem;">Prépare-toi… le programme démarre 💻✨</div>
-  <div class="typewriter"></div>
+  <pre id="terminal" class="typewriter"></pre>
   <button class="button" id="btn1" style="display:none;" onclick="nextScene()">CONTINUER</button>
 </div>
 
@@ -111,8 +111,10 @@ function checkPassword() {
   if(input === secretPassword){
     document.getElementById('scene0').classList.remove('active');
     currentScene = 1;
-    document.getElementById('scene'+currentScene).classList.add('active');
-    setTimeout(()=>startTypewriter(), 50);
+    const scene = document.getElementById('scene'+currentScene);
+    scene.classList.add('active');
+    // Laisser le DOM se mettre à jour avant animation
+    setTimeout(()=>startTypewriter(), 100);
   } else {
     const error = document.getElementById("wrongPass");
     error.style.opacity = 1;
@@ -147,7 +149,7 @@ function startTypewriter(){
     "> Name: ISSA"
   ];
 
-  const terminal = document.querySelector('#scene1 .typewriter');
+  const terminal = document.getElementById("terminal");
   terminal.textContent = '';
   let lineIndex = 0;
   let charIndex = 0;
@@ -155,13 +157,13 @@ function startTypewriter(){
   function type(){
     if(lineIndex < lines.length){
       if(charIndex < lines[lineIndex].length){
-        terminal.innerHTML += lines[lineIndex][charIndex];
+        terminal.textContent += lines[lineIndex][charIndex];
         charIndex++;
         let speed = 30;
         if(lines[lineIndex].includes("Match") || lines[lineIndex].includes("ID") || lines[lineIndex].includes("Name")) speed = 80;
         setTimeout(type, speed);
       } else {
-        terminal.innerHTML += "\n";
+        terminal.textContent += "\n";
         lineIndex++;
         charIndex = 0;
         setTimeout(type, 400);
