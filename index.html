@@ -3,285 +3,243 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The One</title>
-
+<title>The One - Valentine Ultimate</title>
 <style>
-body{
-    margin:0;
-    background:black;
-    color:white;
-    font-family: 'Courier New', monospace;
-    overflow:hidden;
-    text-align:center;
+body {
+  margin:0;
+  background: radial-gradient(circle at center, #1a1a1a, #000);
+  color:white;
+  font-family:'Segoe UI', sans-serif;
+  overflow:hidden;
+  text-align:center;
 }
 
-/* Fond animé */
-.background{
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:radial-gradient(circle at center, #1a0000 0%, #000 70%);
-    animation:pulse 8s infinite alternate;
-    z-index:-1;
+.scene {
+  display:none;
+  height:100vh;
+  width:100%;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:2rem;
+  flex-direction:column;
 }
 
-@keyframes pulse{
-    from{opacity:0.8;}
-    to{opacity:1;}
+.scene.active { display:flex; }
+
+input {
+  padding:12px;
+  font-size:1rem;
+  border:none;
+  border-radius:5px;
+  margin-top:1rem;
+  outline:none;
 }
 
-.scene{
-    display:none;
-    min-height:100vh;
-    padding-top:18vh;
-    opacity:0;
-    transition:opacity 1.5s ease;
+button {
+  margin-top:20px;
+  padding:12px 30px;
+  border:1px solid white;
+  background:transparent;
+  color:white;
+  cursor:pointer;
+  transition:0.3s;
 }
 
-.active{
-    display:block;
-    opacity:1;
+button:hover { background:white; color:black; }
+
+.hint { margin-top:2rem; font-size:0.9rem; opacity:0.6; }
+#error { color:#ff4d6d; margin-top:1rem; }
+
+.terminal-box {
+  background:#000;
+  padding:40px;
+  border-radius:10px;
+  box-shadow:0 0 30px rgba(255,255,255,0.1);
+  width:80%;
+  max-width:700px;
 }
 
-button{
-    margin-top:50px;
-    padding:14px 36px;
-    background:#ff2e4d;
-    border:none;
-    color:white;
-    font-size:16px;
-    cursor:pointer;
-    transition:0.3s;
+pre { color:#00ff88; font-family:monospace; font-size:1.1rem; text-align:left; }
+
+.red { color:#e63946; font-size:2.5rem; margin-top:1rem; animation:beat 1s infinite alternate; }
+@keyframes beat {0%{transform:scale(1);}100%{transform:scale(1.2);} }
+
+.big { font-size:1.6rem; line-height:1.6; margin:1rem 0; }
+
+.final { font-size:1.8rem; line-height:1.8; max-width:800px; margin:2rem auto; text-align:center; }
+
+.algo-text {
+  font-size:1.8rem;
+  line-height:1.8;
+  max-width:800px;
+  text-align:center;
+  animation:fadeIn 2s ease forwards;
+  text-shadow:0 0 15px rgba(255,255,255,0.4);
 }
 
-button:hover{
-    background:#ff4d6d;
-    transform:scale(1.05);
+@keyframes fadeIn {
+  from { opacity:0; transform: translateY(20px); }
+  to { opacity:1; transform: translateY(0); }
 }
 
-.big{
-    font-size:38px;
-    line-height:1.9;
-}
-
-.huge{
-    font-size:90px;
-    letter-spacing:15px;
-    color:#ff2e4d;
-    animation:slowZoom 4s ease forwards;
-}
-
-@keyframes slowZoom{
-    from{transform:scale(0.8); opacity:0;}
-    to{transform:scale(1); opacity:1;}
-}
-
-.final{
-    font-size:46px;
-    line-height:2.2;
-}
-
-.word{
-    font-size:80px;
-    letter-spacing:8px;
-    margin-top:40px;
-    animation:fadeIn 3s ease forwards;
-}
-
-@keyframes fadeIn{
-    from{opacity:0;}
-    to{opacity:1;}
-}
-
-.heart{
-    font-size:70px;
-    color:#ff2e4d;
-    margin-top:30px;
-    animation:beat 1.2s infinite;
-}
-
-@keyframes beat{
-    0%{transform:scale(1);}
-    50%{transform:scale(1.25);}
-    100%{transform:scale(1);}
-}
-
-input{
-    padding:10px;
-    font-size:16px;
-}
+#particles{position:absolute;width:100%;height:100%;pointer-events:none;overflow:hidden;}
+.particle{position:absolute;width:10px;height:10px;background:#e63946;border-radius:50%;opacity:0.8;animation:float 5s linear infinite;}
+@keyframes float{0%{transform:translateY(0) rotate(0deg);}100%{transform:translateY(-100vh) rotate(360deg);opacity:0;}}
 </style>
 </head>
-
 <body>
 
-<div class="background"></div>
+<audio id="bgm" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" autoplay loop></audio>
+<div id="particles"></div>
 
-<!-- SCENE 0 -->
+<!-- SCENE 0: MOT DE PASSE -->
 <div class="scene active" id="scene0">
-    <h2>Bienvenue…</h2>
-    <p>Entre le mot de passe secret.</p>
-    <br>
-    <input type="password" id="password">
-    <br>
-    <button onclick="checkPassword()">Entrer</button>
-    <p id="error" style="color:red;"></p>
+  <h1>Bienvenue…<br>Pour accéder à ton expérience spéciale Saint-Valentin,<br>entre le mot de passe secret :</h1>
+  <input type="password" id="passwordInput" placeholder="Mot de passe">
+  <button onclick="checkPassword()">Entrer</button>
+  <p class="hint">Indice : combinaison de ton prénom et du mien. 8 lettres.</p>
+  <p id="error"></p>
 </div>
 
-<!-- SCENE 1 -->
+<!-- SCENE 1: TERMINAL BOOT -->
 <div class="scene" id="scene1">
-    <pre id="terminal"></pre>
-    <button id="btn1" style="display:none;" onclick="nextScene()">Continuer</button>
+  <div class="terminal-box">
+    <pre id="bootText"></pre>
+  </div>
 </div>
 
-<!-- SCENE 2 -->
+<!-- SCENE 2: NOM -->
 <div class="scene" id="scene2">
-    <div style="opacity:0.6;">Résultat unique.</div>
-    <div class="huge">ISSA</div>
-    <button onclick="nextScene()">...</button>
+  <div class="red" id="revealedName">ISSA</div>
+  <button onclick="nextScene()">CONTINUER</button>
 </div>
 
-<!-- SCENE 3 -->
+<!-- SCENE 3: CŒUR CHOISI -->
 <div class="scene" id="scene3">
-    <div class="big">
-        Tu n’étais pas censé être<br>
-        juste une rencontre.
-        <br><br>
-        Tu es devenu<br>
-        une évidence.
-    </div>
-    <button onclick="nextScene()">Continuer</button>
+  <p class="big">Parmi des milliards d’humains…<br>mon cœur t’a reconnu.</p>
+  <button onclick="nextScene()">CONTINUER</button>
 </div>
 
-<!-- SCENE 4 -->
+<!-- SCENE 4: REGARD AMOUREUX -->
 <div class="scene" id="scene4">
-    <div class="big">
-        Parmi des milliards…<br><br>
-        mon cœur n’a jamais hésité.
-    </div>
-    <button onclick="nextScene()">Continuer</button>
+  <p class="big">Même quand les gens sont lourds…<br>ils te regardent avec les mêmes yeux.</p>
+  <p>Moi je te regarde avec admiration.<br>Avec douceur.<br>Avec amour.</p>
+  <button onclick="nextScene()">CONTINUER</button>
 </div>
 
-<!-- SCENE 5 -->
+<!-- SCENE 5: DÉCLARATION FINALE -->
 <div class="scene" id="scene5">
-    <div class="big">
-        Même quand les jours sont lourds,<br>
-        même quand le monde est bruyant…<br><br>
-        je te regarde toujours<br>
-        avec douceur.
-    </div>
-    <button onclick="nextScene()">Continuer</button>
+  <div class="final">
+    Tu es spécial pour moi.<br>Bien plus que tu ne l’imagines.<br><br>
+    Et si je devais recommencer mille fois…<br>je te choisirais encore.<br><br>
+    <span class="red">❤</span><br><br>
+    Je t’aime, ISSA.
+  </div>
+  <button onclick="nextScene()">CONTINUER</button>
 </div>
 
-<!-- SCENE 6 -->
+<!-- SCENE 6: SI LIFE GETS HARD -->
 <div class="scene" id="scene6">
-<pre class="big">
+  <pre class="big">
 if (life.getHard()) {
-    stay();
+    remember("You are loved.");
 }
 
 const myChoice = "You";
 let forever = true;
-</pre>
-    <div class="word">Toujours.</div>
-    <button onclick="nextScene()">...</button>
+  </pre>
+  <button onclick="nextScene()">CONTINUER</button>
 </div>
 
-<!-- SCENE 7 -->
+<!-- SCENE 7: ALGO -->
 <div class="scene" id="scene7">
-    <div class="big">
-        Ce n’est pas juste la Saint-Valentin.<br><br>
-        C’est le jour où je te rappelle<br>
-        que tu comptes.<br><br>
-        Que tu es devenu essentiel.<br><br>
-        Et que je t’aime.<br><br>
-        Vraiment.
-    </div>
-    <button onclick="nextScene()">...</button>
-</div>
-
-<!-- SCENE 8 -->
-<div class="scene" id="scene8">
-    <div class="final">
-        Si je devais recommencer mille fois…<br><br>
-        je te choisirais encore.
-    </div>
-    <div class="word">Toujours.</div>
-    <div class="heart">❤</div>
+  <div class="algo-text">
+    Si l’amour était un algorithme,<br>
+    tu serais la seule valeur non remplaçable.<br><br>
+    Peu importe les mises à jour de la vie,<br>
+    tu resteras ma version préférée.
+  </div>
 </div>
 
 <script>
+let currentScene = 0;
 
-let current = 0;
-const secret = "ROUMISSA";
-
-function showScene(id){
-    document.querySelectorAll(".scene").forEach(s=>s.classList.remove("active"));
-    document.getElementById(id).classList.add("active");
+function goToScene(id){
+  document.querySelectorAll(".scene").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
 }
 
 function nextScene(){
-    current++;
-    showScene("scene"+current);
+  currentScene++;
+  goToScene("scene"+currentScene);
 }
 
-function checkPassword(){
-    const value = document.getElementById("password").value.toUpperCase();
-    if(value === secret){
-        current = 1;
-        showScene("scene1");
-        startTypewriter();
-    }else{
-        document.getElementById("error").innerText = "Mot de passe incorrect";
-    }
+// MOT DE PASSE
+function checkPassword() {
+  const input = document.getElementById("passwordInput").value.toUpperCase();
+  if(input === "ROUMISSA"){
+    currentScene = 1;
+    goToScene("scene1");
+    startBootSequence();
+  } else {
+    document.getElementById("error").innerText = "Mot de passe incorrect…";
+  }
 }
 
-function startTypewriter(){
-    const lines = [
-        "> Booting emotional system...",
-        "> Synchronizing heartbeat...",
-        "> Accessing heart memory...",
-        "> Scanning 8 042 311 447 humans...",
-        "> Searching for the one who feels like home...",
-        "> Filtering noise...",
-        "> Eliminating distractions...",
-        "> Cross-referencing soul data...",
-        "> ...",
-        "> ...",
-        "> Match found.",
-        "> ID: 0001",
-        "> Name: ISSA"
-    ];
-
-    const terminal = document.getElementById("terminal");
-    terminal.innerHTML = "";
-    let lineIndex = 0;
+// TERMINAL BOOT
+const bootLines = [
+  "> Booting emotional system...",
+  "> Accessing heart memory...",
+  "> Scanning 8 042 311 447 humans...",
+  "> Searching for:",
+  "> - kindness",
+  "> - strength",
+  "> - softness",
+  "> - the one who feels like home...",
+  "> Processing results...",
+  "> Match found."
+];
+let lineIndex = 0;
+function startBootSequence() {
+  const terminal = document.getElementById("bootText");
+  terminal.innerHTML = "";
+  lineIndex = 0;
+  typeLine();
+}
+function typeLine(){
+  if(lineIndex < bootLines.length){
+    const line = bootLines[lineIndex];
     let charIndex = 0;
-
-    function type(){
-        if(lineIndex < lines.length){
-            if(charIndex < lines[lineIndex].length){
-                terminal.innerHTML += lines[lineIndex][charIndex];
-                charIndex++;
-                let speed = 30;
-                if(lines[lineIndex].includes("Match") || lines[lineIndex].includes("Name")){
-                    speed = 80;
-                }
-                setTimeout(type, speed);
-            }else{
-                terminal.innerHTML += "\n";
-                lineIndex++;
-                charIndex = 0;
-                setTimeout(type, 400);
-            }
-        }else{
-            document.getElementById("btn1").style.display = "inline-block";
-        }
-    }
-
-    type();
+    const interval = setInterval(()=>{
+      document.getElementById("bootText").innerHTML += line.charAt(charIndex);
+      charIndex++;
+      if(charIndex === line.length){
+        clearInterval(interval);
+        document.getElementById("bootText").innerHTML += "\n";
+        lineIndex++;
+        setTimeout(typeLine, 400);
+      }
+    },30);
+  } else {
+    setTimeout(()=>goToScene("scene2"), 800);
+    currentScene = 2;
+  }
 }
 
+// PARTICLES
+function createParticles(){
+  const container=document.getElementById('particles');
+  for(let i=0;i<70;i++){
+    let p=document.createElement('div');
+    p.classList.add('particle');
+    p.style.left=Math.random()*100+'%';
+    p.style.width=p.style.height=(5+Math.random()*5)+'px';
+    p.style.animationDuration=(3+Math.random()*3)+'s';
+    container.appendChild(p);
+  }
+}
+createParticles();
 </script>
 
 </body>
