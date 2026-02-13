@@ -35,23 +35,10 @@ button{
     font-size:16px;
 }
 
-.red{
-    color:#e63946;
-}
-
-.big{
-    font-size:28px;
-}
-
-.final{
-    font-size:30px;
-    line-height:1.6;
-}
-
-.heart{
-    font-size:40px;
-    color:#e63946;
-}
+.red{ color:#e63946; }
+.big{ font-size:28px; }
+.final{ font-size:30px; line-height:1.6; }
+.heart{ font-size:40px; color:#e63946; }
 </style>
 </head>
 
@@ -113,15 +100,55 @@ button{
 
 <!-- SCENE 5 -->
 <div class="scene" id="scene5">
-    <div class="final">
+    <p class="big">
         Même quand les jours sont lourds…  
         je te regarde toujours avec les mêmes yeux.
+    </p>
+    <button onclick="nextScene()">CONTINUER</button>
+</div>
+
+<!-- SCENE 6 -->
+<div class="scene" id="scene6">
+<pre class="big">
+if (life.getHard()) {
+    remember("You are loved.");
+}
+
+const myChoice = "You";
+let forever = true;
+</pre>
+    <button onclick="nextScene()">CONTINUER</button>
+</div>
+
+<!-- SCENE 7 -->
+<div class="scene" id="scene7">
+    <p class="big">
+        Ce n’est pas juste la Saint-Valentin.
         <br><br>
-        Tu es devenu essentiel.
+        C’est le jour où je te rappelle que tu comptes.
+        <br>
+        Que tu es devenu essentiel.
+        <br>
+        Et que je t’aime.
         <br><br>
-        <span class="heart">❤</span>
+        Beaucoup. Beaucoup. Beaucoup.
+    </p>
+    <div class="heart">❤ ❤ ❤</div>
+    <button onclick="nextScene()">CONTINUER</button>
+</div>
+
+<!-- SCENE 8 -->
+<div class="scene" id="scene8">
+    <div class="final">
+        Si l’amour était un algorithme,
+        tu serais la seule valeur non remplaçable.
         <br><br>
-        Je t’aime, ISSA.
+        Peu importe les mises à jour de la vie,
+        tu resteras ma version préférée.
+        <br><br>
+        Joyeuse Saint-Valentin 🤍
+        <br><br>
+        Connection stable. Always.
     </div>
 </div>
 
@@ -184,7 +211,6 @@ function startTypewriter(){
                 charIndex++;
 
                 let speed = 30;
-
                 if(
                     lines[lineIndex].includes("Match") ||
                     lines[lineIndex].includes("ID") ||
@@ -194,7 +220,6 @@ function startTypewriter(){
                 }
 
                 setTimeout(type, speed);
-
             }else{
                 terminal.innerHTML += "\n";
                 lineIndex++;
