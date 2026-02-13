@@ -105,64 +105,66 @@ let forever = true;
 </div>
 
 <script>
-let currentScene = 0;
-const secretPassword = "1402";
+document.addEventListener('DOMContentLoaded', () => {
+    let currentScene = 0;
+    const secretPassword = "1402";
 
-function checkPassword() {
-  const input = document.getElementById("passwordInput").value;
-  if(input === secretPassword){
-    document.getElementById('scene0').classList.remove('active');
-    currentScene = 1;
-    document.getElementById('scene'+currentScene).classList.add('active');
-    setTimeout(()=>startTypewriterSequential(currentScene), 50);
-  } else {
-    const error = document.getElementById("wrongPass");
-    error.style.opacity = 1;
-    setTimeout(()=>{error.style.opacity=0;},2000);
-  }
-}
-
-function nextScene(){
-  document.getElementById('scene'+currentScene).classList.remove('active');
-  currentScene++;
-  document.getElementById('scene'+currentScene).classList.add('active');
-  startTypewriterSequential(currentScene);
-}
-
-function startTypewriterSequential(sceneId, index = 0) {
-  const scene = document.getElementById('scene'+sceneId);
-  const elems = scene.querySelectorAll('.typewriter');
-  if(index >= elems.length) return;
-
-  let el = elems[index];
-  let text = el.dataset.text || el.textContent;
-  el.textContent = '';
-  el.classList.remove('fadeSlide');
-
-  function typeChar(i=0){
-    if(i < text.length){
-      el.innerHTML += text.charAt(i);
-      setTimeout(()=>typeChar(i+1), 30);
-    } else {
-      if(el.classList.contains('fadeSlide')) el.style.opacity = 1;
-      startTypewriterSequential(sceneId, index+1);
+    window.checkPassword = function() {
+      const input = document.getElementById("passwordInput").value;
+      if(input === secretPassword){
+        document.getElementById('scene0').classList.remove('active');
+        currentScene = 1;
+        document.getElementById('scene'+currentScene).classList.add('active');
+        setTimeout(()=>startTypewriterSequential(currentScene), 50);
+      } else {
+        const error = document.getElementById("wrongPass");
+        error.style.opacity = 1;
+        setTimeout(()=>{error.style.opacity=0;},2000);
+      }
     }
-  }
-  typeChar();
-}
 
-function createParticles(){
-  const container = document.getElementById('particles');
-  for(let i=0;i<70;i++){
-    let p = document.createElement('div');
-    p.classList.add('particle');
-    p.style.left = Math.random()*100+'%';
-    p.style.width = p.style.height = (5 + Math.random()*5) + 'px';
-    p.style.animationDuration = (3 + Math.random()*3) + 's';
-    container.appendChild(p);
-  }
-}
-createParticles();
+    window.nextScene = function() {
+      document.getElementById('scene'+currentScene).classList.remove('active');
+      currentScene++;
+      document.getElementById('scene'+currentScene).classList.add('active');
+      startTypewriterSequential(currentScene);
+    }
+
+    function startTypewriterSequential(sceneId, index = 0) {
+      const scene = document.getElementById('scene'+sceneId);
+      const elems = scene.querySelectorAll('.typewriter');
+      if(index >= elems.length) return;
+
+      let el = elems[index];
+      let text = el.dataset.text || el.textContent;
+      el.textContent = '';
+      el.classList.remove('fadeSlide');
+
+      function typeChar(i=0){
+        if(i < text.length){
+          el.innerHTML += text.charAt(i);
+          setTimeout(()=>typeChar(i+1), 30);
+        } else {
+          if(el.classList.contains('fadeSlide')) el.style.opacity = 1;
+          startTypewriterSequential(sceneId, index+1);
+        }
+      }
+      typeChar();
+    }
+
+    function createParticles(){
+      const container = document.getElementById('particles');
+      for(let i=0;i<70;i++){
+        let p = document.createElement('div');
+        p.classList.add('particle');
+        p.style.left = Math.random()*100+'%';
+        p.style.width = p.style.height = (5 + Math.random()*5) + 'px';
+        p.style.animationDuration = (3 + Math.random()*3) + 's';
+        container.appendChild(p);
+      }
+    }
+    createParticles();
+});
 </script>
 
 </body>
