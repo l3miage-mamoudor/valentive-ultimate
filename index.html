@@ -109,25 +109,29 @@ const secretPassword = "1402"; // Change ici ton mot de passe
 function checkPassword() {
   const input = document.getElementById("passwordInput").value;
   if(input === secretPassword){
-    const currentEl = document.getElementById('scene0');
-    currentEl.classList.remove('active');
-
+    document.getElementById('scene0').classList.remove('active');
     currentScene = 1;
-    const nextEl = document.getElementById('scene'+currentScene);
-    nextEl.classList.add('active');
+    document.getElementById('scene'+currentScene).classList.add('active');
 
-    // Petit timeout pour laisser le navigateur appliquer la classe active
+    // petit timeout pour forcer le rendu avant typewriter
     setTimeout(() => {
       startTypewriter(currentScene);
-    }, 50);
-    
+      // auto-advance après la scène 1
+      if(currentScene === 1){
+        let scene = document.getElementById('scene1');
+        let elems = scene.querySelectorAll('.typewriter');
+        let totalTime = 0;
+        elems.forEach(el => totalTime += (el.dataset.text.length)*30 + 500);
+        setTimeout(()=>nextScene(), totalTime);
+      }
+    },50);
+
   } else {
     const error = document.getElementById("wrongPass");
     error.style.opacity = 1;
     setTimeout(()=>{error.style.opacity=0;},2000);
   }
 }
-
 
 function nextScene(){
   document.getElementById('scene'+currentScene).classList.remove('active');
@@ -171,4 +175,3 @@ createParticles();
 
 </body>
 </html>
-
