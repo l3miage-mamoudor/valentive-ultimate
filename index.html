@@ -324,8 +324,10 @@ function typeLine(){
     }
     typeChar();
   } else {
-    setTimeout(revealName, 500);
+    // ✅ Passe à scene2 avant d'animer le nom
+    goToScene("scene2");
     currentScene = 2;
+    revealName();
   }
 }
 
