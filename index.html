@@ -160,13 +160,13 @@ pre { color:#00ff88; font-family:monospace; font-size:1.1rem; white-space: pre-w
 <body>
 
 <audio id="bgm" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" autoplay loop></audio>
-<button id="muteBtn" onclick="toggleMusic()">??</button>
+<button id="muteBtn" onclick="toggleMusic()">&#128266;</button>
 <div id="particles"></div>
 
 <!-- SCENE 0 -->
 <div class="scene active" id="scene0">
   <h1>Bienvenue…<br>Pour accéder à ton expérience spéciale Saint-Valentin,<br>entre le mot de passe secret :</h1>
-  <input type="password" id="passwordInput" placeholder="?? Mot de passe ??" autofocus>
+  <input type="password" id="passwordInput" placeholder="💖 Mot de passe 💖" autofocus>
   <button onclick="checkPassword()">Entrer</button>
   <p class="hint">Indice : combinaison de ton prénom et du mien. 8 lettres, **tout en MAJUSCULE**.</p>
   <p id="error"></p>
@@ -211,7 +211,7 @@ Tu es mon refuge, ma certitude,
 bien plus que je n’aurais pu imaginer.<br><br>
 Si je pouvais recommencer mille vies…  
 je te choisirais à chaque fois.<br><br>
-<span class="red">?</span><br><br>
+<span class="red">&#10084;&#65039;</span><br><br>
 Je t’aime, Mon coeur, infiniment.
   </div>
   <button class="pulse" onclick="nextScene()">CONTINUER</button>
@@ -289,9 +289,8 @@ Si elle devient belle, je veux la vivre avec toi.</p>
 <div class="scene final" id="scene9">
   <div id="heartsContainer"></div>
   <div class="final">
-    <p class="impact">Joyeux Saint-Valentin ! ??</p>
-    <p class="big">Chaque instant à tes côtés est un trésor,  
-une lumière qui éclaire mon cœur.</p>
+    <p class="impact">Joyeux Saint-Valentin ! &#128150;</p>
+    <p class="big">Chaque instant à tes côtés est un trésor.</p>
     <p class="signature">— Avec tout mon amour</p>
   </div>
 </div>
@@ -334,8 +333,8 @@ createParticles();
 function toggleMusic(){
   const bgm = document.getElementById('bgm');
   const btn = document.getElementById('muteBtn');
-  if(bgm.paused){ bgm.play(); btn.textContent="??"; } 
-  else{ bgm.pause(); btn.textContent="??"; }
+  if(bgm.paused){ bgm.play(); btn.textContent="&#128266;"; } 
+  else{ bgm.pause(); btn.textContent="&#128263;"; }
 }
 
 // TERMINAL BOOT
