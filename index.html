@@ -255,6 +255,14 @@ let forever = true;
   </div>
 </div>
 
+<!-- SCENE 9: FIN -->
+<div class="scene final" id="scene9">
+  <div class="final">
+    <p class="impact">Joyeux Saint-Valentin ! 💖</p>
+    <p class="signature">— Avec tout mon amour</p>
+  </div>
+</div>
+
 <script>
 let currentScene = 0;
 
@@ -262,7 +270,7 @@ let currentScene = 0;
 function goToScene(id){
   document.querySelectorAll(".scene").forEach(s=>s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
-  window.scrollTo(0,0); // scroll global vers le top
+  window.scrollTo(0,0);
   if(id==='scene8') revealFinalText();
 }
 
@@ -306,7 +314,7 @@ function startBootSequence() {
 }
 function typeLine(){
   if(lineIndex < bootLines.length){
-    const terminal = document.getElementById("bootText"); // correction ici
+    const terminal = document.getElementById("bootText");
     const line = bootLines[lineIndex];
     let charIndex = 0;
     function typeChar(){
@@ -322,7 +330,7 @@ function typeLine(){
     }
     typeChar();
   } else {
-    goToScene("scene2"); // passe à l’annonce d’ISSA
+    goToScene("scene2");
     currentScene = 2;
     revealName();
   }
@@ -369,12 +377,24 @@ function revealFinalText(){
     }, delay);
     delay += 1500;
   });
+  // Scène 9 après fin du texte
+  setTimeout(()=>{
+    currentScene = 9;
+    goToScene("scene9");
+  }, delay + 1000);
 }
 
 // MUSIQUE
 function toggleMusic(){
   const bgm = document.getElementById('bgm');
-  bgm.paused ? bgm.play() : bgm.pause();
+  const btn = document.getElementById('muteBtn');
+  if(bgm.paused){
+    bgm.play();
+    btn.textContent = "🔊";
+  } else {
+    bgm.pause();
+    btn.textContent = "🔇";
+  }
 }
 </script>
 
