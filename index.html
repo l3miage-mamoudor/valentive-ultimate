@@ -182,12 +182,12 @@ Je t’aime, ISSA, infiniment.
   <button class="pulse" onclick="nextScene()">CONTINUER</button>
 </div>
 
-<!-- SCENE 6 -->
+<!-- SCENE 6: CODE TERMINAL -->
 <div class="scene" id="scene6">
   <div class="terminal-box">
     <pre id="codeText"></pre>
+    <button id="codeContinueBtn" class="pulse" style="display:none;" onclick="nextScene()">CONTINUER</button>
   </div>
-  <button class="pulse" onclick="nextScene()">CONTINUER</button>
 </div>
 
 <!-- SCENE 7 -->
@@ -267,7 +267,6 @@ function goToScene(id){
   document.querySelectorAll(".scene").forEach(s=>s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
   window.scrollTo(0,0);
-  if(id==='scene8') revealFinalText();
 }
 
 // Bouton continuer
@@ -410,8 +409,10 @@ function startCodeWriter(){
   const terminal = document.getElementById("codeText");
   terminal.innerHTML = "";
   codeIndex = 0;
+  document.getElementById("codeContinueBtn").style.display = "none"; // cacher bouton
   typeCodeLine();
 }
+
 function typeCodeLine(){
   if(codeIndex < codeLines.length){
     const line = codeLines[codeIndex];
@@ -429,6 +430,8 @@ function typeCodeLine(){
       }
     }
     typeChar();
+  } else {
+    document.getElementById("codeContinueBtn").style.display = "inline-block";
   }
 }
 
