@@ -133,7 +133,7 @@ pre { color:#00ff88; font-family:monospace; font-size:1.1rem; white-space: pre-w
   <h1>Bienvenue…<br>Pour accéder à ton expérience spéciale Saint-Valentin,<br>entre le mot de passe secret :</h1>
   <input type="password" id="passwordInput" placeholder="💖 Mot de passe 💖">
   <button onclick="checkPassword()">Entrer</button>
-  <p class="hint">Indice : combinaison de ton prénom et du mien. 8 lettres.</p>
+  <p class="hint">Indice : combinaison de ton prénom et du mien. 8 lettres, **tout en MAJUSCULE**.</p>
   <p id="error"></p>
 </div>
 
@@ -265,8 +265,14 @@ let currentScene = 0;
 // Navigation entre scenes
 function goToScene(id){
   document.querySelectorAll(".scene").forEach(s=>s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
+  const scene = document.getElementById(id);
+  scene.classList.add("active");
   window.scrollTo(0,0);
+
+  // Si on arrive sur la scène 6, lancer le terminal code
+  if(id === "scene6"){
+    startCodeWriter();
+  }
 }
 
 // Bouton continuer
@@ -361,26 +367,6 @@ function createParticles(){
 }
 createParticles();
 
-// MONOLOGUE FINAL
-function revealFinalText(){
-  const scene = document.getElementById('scene8');
-  const paragraphs = Array.from(scene.querySelectorAll('p'))
-                          .filter(p => p.textContent.trim().length > 0);
-  let delay = 0;
-  paragraphs.forEach(p => {
-    p.style.opacity = 0;
-    setTimeout(()=>{
-      p.style.transition = 'opacity 1s';
-      p.style.opacity = 1;
-    }, delay);
-    delay += 1500;
-  });
-  setTimeout(()=>{
-    currentScene = 9;
-    goToScene("scene9");
-  }, delay + 1000);
-}
-
 // MUSIQUE
 function toggleMusic(){
   const bgm = document.getElementById('bgm');
@@ -434,13 +420,6 @@ function typeCodeLine(){
     document.getElementById("codeContinueBtn").style.display = "inline-block";
   }
 }
-
-// Lancer terminal code automatiquement quand scene6 active
-document.getElementById('scene6').addEventListener('transitionend', ()=>{
-  if(document.getElementById('scene6').classList.contains('active')){
-    startCodeWriter();
-  }
-});
 </script>
 
 </body>
