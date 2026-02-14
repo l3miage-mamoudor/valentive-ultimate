@@ -52,6 +52,7 @@ button {
 }
 
 button:hover { background:#f56570; }
+
 button.pulse { animation: pulse 1.2s infinite alternate; }
 @keyframes pulse { 0%{transform:scale(1);}100%{transform:scale(1.1);} }
 
@@ -119,6 +120,40 @@ pre { color:#00ff88; font-family:monospace; font-size:1.1rem; white-space: pre-w
   justify-content:flex-start;
   padding-top:3rem;
 }
+
+/* Hearts for scene 9 */
+#heartsContainer {
+  position:absolute;
+  width:100%;
+  height:100%;
+  top:0;
+  left:0;
+  pointer-events:none;
+  overflow:hidden;
+}
+.heart {
+  position:absolute;
+  width:20px;
+  height:20px;
+  background:#e63946;
+  transform: rotate(-45deg);
+  animation: floatHeart 5s linear infinite;
+}
+.heart:before,
+.heart:after {
+  content:"";
+  position:absolute;
+  width:20px;
+  height:20px;
+  background:#e63946;
+  border-radius:50%;
+}
+.heart:before { top:-10px; left:0; }
+.heart:after { left:10px; top:0; }
+@keyframes floatHeart {
+  0% { transform: translateY(0) rotate(-45deg); opacity:1; }
+  100% { transform: translateY(-100vh) rotate(-45deg); opacity:0; }
+}
 </style>
 </head>
 <body>
@@ -181,12 +216,20 @@ Je t’aime, ISSA, infiniment.
   <button class="pulse" onclick="nextScene()">CONTINUER</button>
 </div>
 
-<!-- SCENE 6: CODE TERMINAL SIMPLE -->
+<!-- SCENE 6: CODE TERMINAL -->
 <div class="scene" id="scene6">
   <div class="terminal-box">
-    <pre id="codeText"></pre>
-    <button id="codeContinueBtn" class="pulse" style="display:none;" onclick="nextScene()">CONTINUER</button>
+    <pre id="codeText">
+if (life.getHard()) {
+    remember("You are loved.");
+}
+
+while(myHeart.beating()){
+    myChoice = YOU;
+}
+    </pre>
   </div>
+  <button class="pulse" onclick="nextScene()">CONTINUER</button>
 </div>
 
 <!-- SCENE 7 -->
@@ -257,6 +300,7 @@ Si elle devient belle, je veux la vivre avec toi.</p>
 une lumière qui éclaire mon cœur.</p>
     <p class="signature">— Avec tout mon amour</p>
   </div>
+  <div id="heartsContainer"></div>
 </div>
 
 <script>
@@ -269,10 +313,8 @@ function goToScene(id){
   scene.classList.add("active");
   window.scrollTo(0,0);
 
-  // Si on arrive sur la scène 6, lancer le terminal code
-  if(id === "scene6"){
-    startCodeWriter();
-  }
+  // Si on arrive sur la scène 9, lancer les coeurs
+  if(id === "scene9") startHearts();
 }
 
 // Bouton continuer
@@ -380,43 +422,18 @@ function toggleMusic(){
   }
 }
 
-// SCENE 6 : terminal code animation simple
-const codeLines=[
-  "if (life.getHard()) {",
-  '    remember("You are loved.");',
-  "}",
-  "",
-  "while(myHeart.beating()){",
-  "    myChoice = YOU;",
-  "}"
-];
-function startCodeWriter(){
-  const terminal = document.getElementById("codeText");
-  terminal.innerHTML = "";
-  document.getElementById("codeContinueBtn").style.display = "none";
-
-  let codeIndex = 0;
-  function typeCodeLine(){
-    if(codeIndex < codeLines.length){
-      const line = codeLines[codeIndex];
-      let charIndex = 0;
-      function typeChar(){
-        terminal.innerHTML += line.charAt(charIndex);
-        charIndex++;
-        if(charIndex < line.length){
-          setTimeout(typeChar, 30);
-        } else {
-          terminal.innerHTML += "\n";
-          codeIndex++;
-          setTimeout(typeCodeLine, 300);
-        }
-      }
-      typeChar();
-    } else {
-      document.getElementById("codeContinueBtn").style.display = "inline-block";
-    }
+// SCENE 9 : Hearts animation
+function startHearts(){
+  const container = document.getElementById("heartsContainer");
+  for(let i=0; i<30; i++){
+    const h = document.createElement("div");
+    h.classList.add("heart");
+    h.style.left = Math.random()*100 + "%";
+    let size = 10 + Math.random()*15;
+    h.style.width = h.style.height = size + "px";
+    h.style.animationDuration = (4 + Math.random()*3) + "s";
+    container.appendChild(h);
   }
-  typeCodeLine();
 }
 </script>
 
