@@ -25,6 +25,7 @@ body {
   text-align:center;
   padding:2rem;
   flex-direction:column;
+  overflow-y:auto;
 }
 
 .scene.active { display:flex; }
@@ -67,9 +68,13 @@ button.pulse { animation: pulse 1.2s infinite alternate; }
   width:80%;
   max-width:700px;
   text-align:left;
+  position:relative;
 }
 
 pre { color:#00ff88; font-family:monospace; font-size:1.1rem; white-space: pre-wrap; word-wrap: break-word; }
+
+.cursor { display:inline-block; width:10px; animation: blink 1s step-start infinite; }
+@keyframes blink { 50% {opacity:0;} }
 
 .red { color:#e63946; font-family:'Playfair Display', serif; font-size:3rem; margin-top:1rem; animation:beat 1s infinite alternate; }
 @keyframes beat {0%{transform:scale(1);}100%{transform:scale(1.2);} }
@@ -119,6 +124,7 @@ pre { color:#00ff88; font-family:monospace; font-size:1.1rem; white-space: pre-w
 .scene.final {
   justify-content:flex-start;
   padding-top:3rem;
+  overflow-y:auto;
 }
 
 /* Hearts for scene 9 */
@@ -137,7 +143,6 @@ pre { color:#00ff88; font-family:monospace; font-size:1.1rem; white-space: pre-w
   height:20px;
   background:#e63946;
   transform: rotate(-45deg);
-  animation: floatHeart 5s linear infinite;
 }
 .heart:before,
 .heart:after {
@@ -150,22 +155,18 @@ pre { color:#00ff88; font-family:monospace; font-size:1.1rem; white-space: pre-w
 }
 .heart:before { top:-10px; left:0; }
 .heart:after { left:10px; top:0; }
-@keyframes floatHeart {
-  0% { transform: translateY(0) rotate(-45deg); opacity:1; }
-  100% { transform: translateY(-100vh) rotate(-45deg); opacity:0; }
-}
 </style>
 </head>
 <body>
 
 <audio id="bgm" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" autoplay loop></audio>
-<button id="muteBtn" onclick="toggleMusic()">🔊</button>
+<button id="muteBtn" onclick="toggleMusic()">??</button>
 <div id="particles"></div>
 
 <!-- SCENE 0 -->
 <div class="scene active" id="scene0">
   <h1>Bienvenue…<br>Pour accéder à ton expérience spéciale Saint-Valentin,<br>entre le mot de passe secret :</h1>
-  <input type="password" id="passwordInput" placeholder="💖 Mot de passe 💖">
+  <input type="password" id="passwordInput" placeholder="?? Mot de passe ??" autofocus>
   <button onclick="checkPassword()">Entrer</button>
   <p class="hint">Indice : combinaison de ton prénom et du mien. 8 lettres, **tout en MAJUSCULE**.</p>
   <p id="error"></p>
@@ -210,8 +211,8 @@ Tu es mon refuge, ma certitude,
 bien plus que je n’aurais pu imaginer.<br><br>
 Si je pouvais recommencer mille vies…  
 je te choisirais à chaque fois.<br><br>
-<span class="red">❤</span><br><br>
-Je t’aime, ISSA, infiniment.
+<span class="red">?</span><br><br>
+Je t’aime, Mon coeur, infiniment.
   </div>
   <button class="pulse" onclick="nextScene()">CONTINUER</button>
 </div>
@@ -219,17 +220,9 @@ Je t’aime, ISSA, infiniment.
 <!-- SCENE 6: CODE TERMINAL -->
 <div class="scene" id="scene6">
   <div class="terminal-box">
-    <pre id="codeText">
-if (life.getHard()) {
-    remember("You are loved.");
-}
-
-while(myHeart.beating()){
-    myChoice = YOU;
-}
-    </pre>
+    <pre id="codeText"></pre>
+    <button id="codeContinueBtn" class="pulse" style="display:none;" onclick="nextScene()">CONTINUER</button>
   </div>
-  <button class="pulse" onclick="nextScene()">CONTINUER</button>
 </div>
 
 <!-- SCENE 7 -->
@@ -294,105 +287,33 @@ Si elle devient belle, je veux la vivre avec toi.</p>
 
 <!-- SCENE 9: FIN -->
 <div class="scene final" id="scene9">
+  <div id="heartsContainer"></div>
   <div class="final">
-    <p class="impact">Joyeux Saint-Valentin ! 💖</p>
+    <p class="impact">Joyeux Saint-Valentin ! ??</p>
     <p class="big">Chaque instant à tes côtés est un trésor,  
 une lumière qui éclaire mon cœur.</p>
     <p class="signature">— Avec tout mon amour</p>
   </div>
-  <div id="heartsContainer"></div>
 </div>
 
 <script>
+// Navigation
 let currentScene = 0;
-
-// Navigation entre scenes
 function goToScene(id){
   document.querySelectorAll(".scene").forEach(s=>s.classList.remove("active"));
   const scene = document.getElementById(id);
   scene.classList.add("active");
   window.scrollTo(0,0);
-
-  // Si on arrive sur la scène 9, lancer les coeurs
-  if(id === "scene9") startHearts();
+  if(id==="scene6"){ startCodeWriter(); }
+  if(id==="scene9"){ createHearts(); }
 }
-
-// Bouton continuer
-function nextScene(){
-  currentScene++;
-  goToScene("scene"+currentScene);
-}
+function nextScene(){ currentScene++; goToScene("scene"+currentScene); }
 
 // MOT DE PASSE
 function checkPassword() {
   const input = document.getElementById("passwordInput").value.toUpperCase();
-  if(input === "ROUMISSA"){
-    currentScene = 1;
-    goToScene("scene1");
-    startBootSequence();
-  } else {
-    document.getElementById("error").innerText = "Mot de passe incorrect…";
-  }
-}
-
-// TERMINAL BOOT
-const bootLines = [
-  "> Booting emotional system...",
-  "> Accessing heart memory...",
-  "> Scanning 8 042 311 447 humans...",
-  "> Searching for:",
-  "> - kindness",
-  "> - strength",
-  "> - softness",
-  "> - the one who feels like home...",
-  "> Processing results...",
-  "> Match found."
-];
-let lineIndex = 0;
-function startBootSequence() {
-  const terminal = document.getElementById("bootText");
-  terminal.innerHTML = "";
-  lineIndex = 0;
-  typeLine();
-}
-function typeLine(){
-  if(lineIndex < bootLines.length){
-    const terminal = document.getElementById("bootText");
-    const line = bootLines[lineIndex];
-    let charIndex = 0;
-    function typeChar(){
-      terminal.innerHTML += line.charAt(charIndex);
-      charIndex++;
-      if(charIndex < line.length){
-        setTimeout(typeChar, 20 + Math.random()*40);
-      } else {
-        terminal.innerHTML += "\n";
-        lineIndex++;
-        setTimeout(typeLine, 300);
-      }
-    }
-    typeChar();
-  } else {
-    goToScene("scene2");
-    currentScene = 2;
-    revealISSA();
-  }
-}
-
-// REVEAL ISSA (scene 2)
-function revealISSA(){
-  const container = document.getElementById("nameText");
-  const text = "Unique matching human found : ISSA";
-  let charIndex = 0;
-  container.innerHTML = "";
-  function typeChar(){
-    container.innerHTML += text.charAt(charIndex);
-    charIndex++;
-    if(charIndex < text.length){
-      setTimeout(typeChar, 60);
-    }
-  }
-  typeChar();
+  if(input==="ROUMISSA"){ currentScene=1; goToScene("scene1"); startBootSequence(); }
+  else{ document.getElementById("error").innerText="Mot de passe incorrect…"; }
 }
 
 // PARTICLES
@@ -413,27 +334,125 @@ createParticles();
 function toggleMusic(){
   const bgm = document.getElementById('bgm');
   const btn = document.getElementById('muteBtn');
-  if(bgm.paused){
-    bgm.play();
-    btn.textContent = "🔊";
-  } else {
-    bgm.pause();
-    btn.textContent = "🔇";
-  }
+  if(bgm.paused){ bgm.play(); btn.textContent="??"; } 
+  else{ bgm.pause(); btn.textContent="??"; }
 }
 
-// SCENE 9 : Hearts animation
-function startHearts(){
-  const container = document.getElementById("heartsContainer");
-  for(let i=0; i<30; i++){
-    const h = document.createElement("div");
-    h.classList.add("heart");
-    h.style.left = Math.random()*100 + "%";
-    let size = 10 + Math.random()*15;
-    h.style.width = h.style.height = size + "px";
-    h.style.animationDuration = (4 + Math.random()*3) + "s";
-    container.appendChild(h);
+// TERMINAL BOOT
+const bootLines=[
+  "> Booting emotional system...",
+  "> Accessing heart memory...",
+  "> Scanning 8 042 311 447 humans...",
+  "> Searching for:",
+  "> - kindness",
+  "> - strength",
+  "> - softness",
+  "> - the one who feels like home...",
+  "> Processing results...",
+  "> Match found."
+];
+let lineIndex=0;
+function startBootSequence(){
+  const terminal=document.getElementById("bootText");
+  terminal.innerHTML="";
+  lineIndex=0;
+  typeWriter(terminal, bootLines, ()=>{goToScene("scene2"); currentScene=2; revealISSA();});
+}
+
+// REVEAL ISSA
+function revealISSA(){
+  const container=document.getElementById("nameText");
+  const text="Unique matching human found : ISSA";
+  typeWriter(container, [text]);
+}
+
+// CODE TERMINAL SCENE 6
+const codeLines=[
+  "if (life.getHard()) {",
+  '    remember("You are loved.");',
+  "}",
+  "",
+  "while(myHeart.beating()){",
+  "    myChoice = YOU;",
+  "}"
+];
+function startCodeWriter(){
+  const terminal=document.getElementById("codeText");
+  terminal.innerHTML="";
+  document.getElementById("codeContinueBtn").style.display="none";
+  typeWriter(terminal, codeLines, ()=>{document.getElementById("codeContinueBtn").style.display="inline-block";});
+}
+
+// GENERIC TYPEWRITER
+function typeWriter(container, lines, callback){
+  let lineIndex = 0;
+  container.innerHTML = "";
+
+  function typeLine(){
+    if(lineIndex < lines.length){
+
+      const line = lines[lineIndex];
+      let charIndex = 0;
+
+      const lineSpan = document.createElement("span");
+      container.appendChild(lineSpan);
+
+      const cursor = document.createElement("span");
+      cursor.className = "cursor";
+      cursor.textContent = "|";
+      container.appendChild(cursor);
+
+      function typeChar(){
+        lineSpan.textContent += line.charAt(charIndex);
+        charIndex++;
+
+        if(charIndex < line.length){
+          setTimeout(typeChar, 20 + Math.random()*30);
+        } else {
+          container.removeChild(cursor);
+          container.innerHTML += "\n";
+          lineIndex++;
+          setTimeout(typeLine, 200);
+        }
+      }
+
+      typeChar();
+
+    } else if(callback){
+      callback();
+    }
   }
+
+  typeLine();
+}
+
+// HEARTS ANIMATION
+function createHearts(){
+  const container=document.getElementById('heartsContainer');
+  for(let i=0;i<30;i++){
+    const h=document.createElement('div');
+    h.classList.add('heart');
+    h.style.left=Math.random()*100+'%';
+    h.style.top=-20+'px';
+    h.style.width=(10+Math.random()*20)+'px';
+    h.style.height=h.style.width;
+    h.style.animationDuration=(4+Math.random()*3)+'s';
+    container.appendChild(h);
+    animateHeart(h);
+  }
+}
+function animateHeart(h){
+  const duration=parseFloat(h.style.animationDuration)*1000;
+  const start=performance.now();
+  function step(timestamp){
+    const elapsed=timestamp-start;
+    const progress=elapsed/duration;
+    if(progress<1){
+      h.style.top=progress*100+'vh';
+      requestAnimationFrame(step);
+    } else{ h.remove(); }
+  }
+  requestAnimationFrame(step);
 }
 </script>
 
